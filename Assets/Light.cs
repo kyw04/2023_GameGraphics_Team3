@@ -2,30 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DrawLight))]
 public class Light : MonoBehaviour
 {
     public Vector3 startPoint;
     [Range(0f, 360f)]
     public float lightAngle;
     public float lightRadius;
-    public float rayCount;
+    public int rayCount;
+
+    private DrawLight draw;
+
+    private void Start()
+    {
+        draw = GetComponent<DrawLight>();
+    }
 
     private void Update()
     {
+        draw.Clear();
+        draw.AddVertice(transform.position);
         for (int i = 0; i <= rayCount; i++)
         {
+            
             Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius);
             if (hit)
             {
+                draw.AddVertice(dir * hit.distance + transform.position);
                 Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
-                Debug.Log(hit.point);
             }
             else
             {
+                draw.AddVertice(dir * lightRadius + transform.position);
                 Debug.DrawRay(transform.position, dir * lightRadius, Color.blue);
             }
         }
+        draw.DrawMesh();
     }
 
     private void OnDrawGizmos()
@@ -34,11 +47,16 @@ public class Light : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lightRadius);
 
         Gizmos.color = Color.yellow;
-        for (int i = 0; i <= rayCount; i++)
-        {
-            Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i) * lightRadius;
-            Gizmos.DrawLine(transform.position, dir + transform.position);
-        }
+        Vector3 startDir = RoateVector(startPoint, 0) * lightRadius;
+        Gizmos.DrawLine(transform.position, startDir + transform.position);
+        Vector3 endDir = RoateVector(startPoint, lightAngle) * lightRadius;
+        Gizmos.DrawLine(transform.position, endDir + transform.position);
+
+        //for (int i = 0; i <= rayCount; i++)
+        //{
+        //    Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i) * lightRadius;
+        //    Gizmos.DrawLine(transform.position, dir + transform.position);
+        //}
     }
 
     private Vector3 RoateVector(Vector3 _point, float _angle)
