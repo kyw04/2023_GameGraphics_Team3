@@ -41,15 +41,6 @@ public class Light : MonoBehaviour
         }
     }
 
-    private Vector3 RoateVector(float _angle)
-    {
-        float radian = _angle * Mathf.Deg2Rad;
-        Vector3 a = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian));
-        Vector3 b = new Vector3(-Mathf.Sin(radian), Mathf.Cos(radian));
-
-        return (a + b).normalized;
-    }
-
     private Vector3 RoateVector(Vector3 _point, float _angle)
     {
         float radian = _angle * Mathf.Deg2Rad;
