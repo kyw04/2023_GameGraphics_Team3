@@ -47,12 +47,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    //private void Turn()
-    //{
-    //    if(isMove)
-    //    moveSpeed *= -1;
-    //    spriteRenderer.flipX = false;
-    //}
+    private void Turn()
+    {
+        if(isMove)
+        moveSpeed *= -1;
+        spriteRenderer.flipX = false;
+    }
 
     private void Targeting()
     {
@@ -73,8 +73,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.tag == "Turn") Turn();
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Turn") Turn();
+    }
 }
