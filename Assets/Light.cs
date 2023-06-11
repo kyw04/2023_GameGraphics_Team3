@@ -26,7 +26,7 @@ public class Light : MonoBehaviour
         {
             
             Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius, ~LayerMask.GetMask("Shadow"));
             if (hit)
             {
                 draw.AddVertice(dir * hit.distance + transform.position);

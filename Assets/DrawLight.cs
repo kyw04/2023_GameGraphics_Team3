@@ -34,7 +34,7 @@ public class DrawLight : MonoBehaviour
         vertices[0] = Vector3.zero;
         for (int i = 0; i < vertexCount - 1; i++)
         {
-            vertices[i + 1] = this.transform.InverseTransformPoint(points[i]);
+            vertices[i + 1] = transform.InverseTransformPoint(points[i]);
 
             if (i < vertexCount - 2)
             {
