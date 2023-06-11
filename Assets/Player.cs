@@ -4,33 +4,68 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public SpriteRenderer shadow;
     public float radius;
     public float movementSpeed = 5f;
+    public float jumpPower = 5f;
 
     private GameObject controlledObj;
     private SpriteRenderer spriteRenderer;
+    private Animator ani;
+    private Rigidbody2D rb;
+    private BoxCollider2D box;
     private Vector2 movement;
     private bool isShadow = false;
+    private bool isGround = false;
+    private bool isMove = true;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        ani = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        box = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
     {
+        if (!isMove)
+            return;
+
         movement.x = Input.GetAxisRaw("Horizontal");
+        
+        if (movement.x == 0f)
+        {
+            ani.SetBool("isRun", false);
+        }
+        else
+        {
+            if (movement.x > 0)
+                spriteRenderer.flipX = true;
+            else
+                spriteRenderer.flipX = false;
+            ani.SetBool("isRun", true);
+        }
 
         transform.Translate(movement * movementSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            isMove = false;
             isShadow = !isShadow;
-
-            shadow.enabled = isShadow;
-            spriteRenderer.enabled = !isShadow;
             gameObject.layer = isShadow ? LayerMask.NameToLayer("Shadow") : LayerMask.NameToLayer("Player");
+            ani.SetTrigger("Change");
+        }
+
+        if (rb.velocity.y != 0)
+        {
+            isGround = false;
+        }
+        if (Input.GetButtonUp("Jump") && isGround && !isShadow)
+        {
+            isGround = false;
+            ani.SetTrigger("doJump");
+            ani.SetBool("isGround", false);
+            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
 
         if (isShadow)
@@ -57,7 +92,7 @@ public class Player : MonoBehaviour
                     gameObject.layer = LayerMask.NameToLayer("Shadow");
                     controlledObj = null;
                 }
-                else if (selectCollider)
+                else if (selectCollider && selectCollider.GetComponent<Shadow>().onShadow)
                 {
                     gameObject.layer = selectCollider.gameObject.layer;
                     transform.position = selectCollider.transform.position;
@@ -71,6 +106,20 @@ public class Player : MonoBehaviour
             controlledObj.transform.parent = null;
             gameObject.layer = LayerMask.NameToLayer("Player");
             controlledObj = null;
+        }
+    }
+
+    public void OnMove()
+    {
+        isMove = true;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Enemy"))
+        {
+            ani.SetBool("isGround", true);
+            isGround = true;
         }
     }
 

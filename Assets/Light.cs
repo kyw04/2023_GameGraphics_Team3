@@ -17,18 +17,22 @@ public class Light : MonoBehaviour
     {
         draw = GetComponent<DrawLight>();
     }
-
+    
     private void Update()
     {
         draw.Clear();
         draw.AddVertice(transform.position);
         for (int i = 0; i <= rayCount; i++)
         {
-            
             Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius, ~LayerMask.GetMask("Shadow"));
             if (hit)
             {
+                if (hit.collider.GetComponent<Shadow>())
+                {
+                    hit.collider.GetComponent<Shadow>().onShadow = true;
+                }
+
                 draw.AddVertice(dir * hit.distance + transform.position);
                 Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
             }
