@@ -34,8 +34,11 @@ public class Enemy : MonoBehaviour
     {
         if (isMove)
         {
+            float distance = (player.transform.position.x - transform.position.x);
+            int direction = distance > 0 ? 1 : -1;
+            moveSpeed *= direction;
+
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-            Vector3 dirVec = (player.transform.position - transform.position);
             if (distance <= observeRange)
             {
                 isChase = true;
@@ -44,12 +47,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Turn()
-    {
-        if(isMove)
-        moveSpeed *= -1;
-        spriteRenderer.flipX = false;
-    }
+    //private void Turn()
+    //{
+    //    if(isMove)
+    //    moveSpeed *= -1;
+    //    spriteRenderer.flipX = false;
+    //}
 
     private void Targeting()
     {
@@ -70,8 +73,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Turn") Turn();
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Turn") Turn();
+    //}
 }
