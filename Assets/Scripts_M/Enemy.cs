@@ -29,24 +29,23 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        Move();
-        distance = (player.transform.position - transform.position).magnitude;
-        
-        Targeting();
+        if (isMove)
+        {
+            Move();
+            distance = (player.transform.position - transform.position).magnitude;
+
+            Targeting();
+        }
     }
 
     private void Move()
     {
-        if (isMove)
-        {
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        }
+        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
     }
 
     private void Turn()
     {
-        if(isMove)
-            moveSpeed *= -1;
+        moveSpeed *= -1;
         spriteRenderer.flipX = !spriteRenderer.flipX;
     }
 
@@ -104,6 +103,7 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, observeRange);
+        Gizmos.DrawLine(transform.position + new Vector3(observeRange, 1.5f), transform.position + new Vector3(observeRange, -1.5f));
+        Gizmos.DrawLine(transform.position - new Vector3(observeRange, 1.5f), transform.position - new Vector3(observeRange, -1.5f));
     }
 }
