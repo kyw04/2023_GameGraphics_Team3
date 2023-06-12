@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         
         if (controlledObjRb != null)
         {
-            controlledObjRb.AddForce(movement * movementSpeed, ForceMode2D.Force);
+            controlledObjRb.AddForce(movement * movementSpeed * Time.deltaTime * 250f, ForceMode2D.Force);
         }
         else if (controlledObj != null)
         {
