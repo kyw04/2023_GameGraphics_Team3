@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
                 }
             }
 
-            Debug.Log(player.transform.position.x - transform.position.x);
+            //Debug.Log(player.transform.position.x - transform.position.x);
             if (moveSpeed > 0) spriteRenderer.flipX = false;
             else spriteRenderer.flipX = true;
         }
