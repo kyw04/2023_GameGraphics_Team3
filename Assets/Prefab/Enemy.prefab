@@ -148,8 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96eed897aca31d94cbbb1b774f71c365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointA: {fileID: 0}
+  pointB: {fileID: 0}
   moveSpeed: 2
-  observeRange: 3
+  observeRange: 5
   distance: 0
   isChase: 0
   isMove: 1
