@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public Transform pointA;
+    public Transform pointB;
     public int moveSpeed;
     public float observeRange = 0;
     public float distance = 0;
@@ -11,11 +13,13 @@ public class Enemy : MonoBehaviour
     public bool isMove;
     public Player player;
 
+    private Transform startPos;
     SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        startPos = gameObject.transform;
     }
 
     void Start()
@@ -26,8 +30,9 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         Move();
-        Targeting();
         distance = (player.transform.position - transform.position).magnitude;
+        
+        Targeting();
     }
 
     private void Move()
@@ -35,15 +40,6 @@ public class Enemy : MonoBehaviour
         if (isMove)
         {
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-            if (distance <= observeRange)
-            {
-                float distance = (player.transform.position.x - transform.position.x);
-                int direction = distance > 0 ? 1 : -1;
-                moveSpeed *= direction;
-
-                isChase = true;
-                isMove = false;
-            }
         }
     }
 
@@ -56,25 +52,58 @@ public class Enemy : MonoBehaviour
 
     private void Targeting()
     {
-        if (isChase)
+        if (distance <= observeRange)
         {
-            if (distance <= observeRange)
+            if (player.transform.position.x - transform.position.x > 0)
             {
-                moveSpeed = (player.transform.position.x - transform.position.x) > 0 ? 1 : -1;
-                if (moveSpeed > 0) spriteRenderer.flipX = false;
-                else spriteRenderer.flipX = true;
-                transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+                if (moveSpeed < 0)
+                {
+                    moveSpeed = -moveSpeed;
+                }
             }
             else
             {
-                isMove = true;
-                isChase = false;
+                if (moveSpeed > 0)
+                {
+                    moveSpeed = -moveSpeed;
+                }
+            }
+
+            Debug.Log(player.transform.position.x - transform.position.x);
+            if (moveSpeed > 0) spriteRenderer.flipX = false;
+            else spriteRenderer.flipX = true;
+        }
+        else
+        {
+            float pointADis = pointA.position.x - transform.position.x;
+            float pointBDis = pointB.position.x - transform.position.x;
+
+            if (pointADis >= 0)
+            {
+                if (pointADis * moveSpeed < 0)
+                    Turn();
+            }
+            else if (pointBDis <= 0)
+            {
+                if (pointBDis * moveSpeed < 0)
+                    Turn();
             }
         }
+        //if (isChase)
+        //{
+
+
+        //    else
+        //    {
+        //        isMove = true;
+        //        isChase = false;
+        //    }
+        //}
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnDrawGizmos()
     {
-        if (collision.tag == "Turn") Turn();
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, observeRange);
     }
 }

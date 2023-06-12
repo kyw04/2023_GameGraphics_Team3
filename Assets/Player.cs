@@ -60,12 +60,9 @@ public class Player : MonoBehaviour
         {
             isGround = false;
         }
-        if (Input.GetButtonUp("Jump") && isGround && !isShadow)
+        if (Input.GetButtonDown("Jump") && isGround && !isShadow)
         {
-            isGround = false;
-            ani.SetTrigger("doJump");
-            ani.SetBool("isGround", false);
-            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            OnJump();
         }
 
         if (isShadow)
@@ -109,6 +106,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnJump()
+    {
+        isGround = false;
+        ani.SetTrigger("doJump");
+        ani.SetBool("isGround", false);
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+    }
+
     public void OnMove()
     {
         isMove = true;
@@ -116,10 +122,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor") || collision.gameObject.CompareTag("Enemy"))
+        if (isShadow)
+            return;
+
+        if (collision.gameObject.CompareTag("Floor"))
         {
             ani.SetBool("isGround", true);
             isGround = true;
+        }
+
+        if (collision.gameObject.CompareTag("EnemyHead"))
+        {
+            OnJump();
         }
     }
 

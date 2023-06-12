@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Turn
   - Floor
+  - EnemyHead
   layers:
   - Default
   - TransparentFX
