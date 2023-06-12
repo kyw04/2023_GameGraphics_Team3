@@ -200,6 +200,11 @@ public class Player : MonoBehaviour
             isMove = false;
             ani.SetTrigger("doDie");
         }
+
+        if (collision.gameObject.CompareTag("End"))
+        {
+            SceneChangeManager.instance.ChangeScene(collision.gameObject.name);
+        }
     }
 
     private void OnDrawGizmos()

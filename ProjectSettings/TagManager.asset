@@ -10,6 +10,7 @@ TagManager:
   - Floor
   - EnemyHead
   - Coin
+  - End
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Dead
   - DynamicObject
   - Coin
-  - 
+  - End
   - 
   - 
   - 
