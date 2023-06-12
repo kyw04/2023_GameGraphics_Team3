@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public float radius;
     public float movementSpeed = 5f;
     public float jumpPower = 5f;
+    public float coinCount = 0;
 
     private GameObject controlledObj;
     private SpriteRenderer spriteRenderer;
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
         if (rb.velocity.y != 0)
         {
             isGround = false;
+            ani.SetBool("isGround", false);
         }
         if (Input.GetButtonDown("Jump") && isGround && !isShadow)
         {
@@ -120,6 +122,11 @@ public class Player : MonoBehaviour
         isMove = true;
     }
 
+    public void GameOver()
+    {
+        Debug.Log("GameOver");
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (isShadow)
@@ -134,6 +141,16 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("EnemyHead"))
         {
             OnJump();
+            collision.GetComponentInParent<Enemy>().Die();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            isMove = false;
+            ani.SetTrigger("doDie");
         }
     }
 

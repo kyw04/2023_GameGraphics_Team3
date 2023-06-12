@@ -25,7 +25,7 @@ public class Light : MonoBehaviour
         for (int i = 0; i <= rayCount; i++)
         {
             Vector3 dir = RoateVector(startPoint, lightAngle / rayCount * i);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius, ~LayerMask.GetMask("Shadow"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, lightRadius, ~(LayerMask.GetMask("Shadow") & LayerMask.GetMask("Dead")));
             if (hit)
             {
                 if (hit.collider.GetComponent<Shadow>())

@@ -13,18 +13,13 @@ public class Enemy : MonoBehaviour
     public bool isMove;
     public Player player;
 
-    private Transform startPos;
     SpriteRenderer spriteRenderer;
+    private Animator ani;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        startPos = gameObject.transform;
-    }
-
-    void Start()
-    {
-        
+        ani = GetComponent<Animator>();
     }
 
     private void Update()
@@ -98,6 +93,16 @@ public class Enemy : MonoBehaviour
         //        isChase = false;
         //    }
         //}
+    }
+
+    public void Die()
+    {
+        isMove = false;
+        spriteRenderer.color = Color.gray;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+        transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Dead");
+        ani.SetTrigger("Dead");
+        Destroy(this.gameObject, 1.5f);
     }
 
     private void OnDrawGizmos()

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 201054182499379318}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   radius: 0.5
   movementSpeed: 6
   jumpPower: 15
+  coinCount: 0
 --- !u!95 &201054182499379318
 Animator:
   serializedVersion: 5
