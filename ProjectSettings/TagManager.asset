@@ -9,6 +9,7 @@ TagManager:
   - Turn
   - Floor
   - EnemyHead
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Wall
   - Enemy
   - Dead
-  - 
-  - 
+  - DynamicObject
+  - Coin
   - 
   - 
   - 

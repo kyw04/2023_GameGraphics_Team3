@@ -8,8 +8,13 @@ public class Coin : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.GetComponent<Player>().coinCount++;
-            Destroy(this.gameObject);
+            GetCoin(collision.GetComponent<Player>());
         }
+    }
+
+    public void GetCoin(Player player)
+    {
+        player.coinCount++;
+        Destroy(this.gameObject);
     }
 }

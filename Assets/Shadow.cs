@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shadow : MonoBehaviour
 {
+    public bool defaultShadow;
     public bool onShadow;
     public SpriteRenderer shadow;
 
@@ -14,8 +15,12 @@ public class Shadow : MonoBehaviour
 
     private void Update()
     {
-        shadow.transform.position = new Vector3(transform.position.x, shadow.transform.position.y);
-        shadow.enabled = onShadow;
-        onShadow = false;
+        if (shadow != null)
+        {
+            shadow.transform.position = new Vector3(transform.position.x, shadow.transform.position.y);
+            shadow.enabled = onShadow;
+        }
+
+        onShadow = defaultShadow;
     }
 }
