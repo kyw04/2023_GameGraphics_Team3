@@ -191,6 +191,7 @@ MonoBehaviour:
   jumpPower: 15
   coinCount: 0
   cameraMove: {fileID: 0}
+  onChange: 0
 --- !u!1 &5517923647780480271
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8830426183310820610}
   - component: {fileID: 3395029861279436762}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

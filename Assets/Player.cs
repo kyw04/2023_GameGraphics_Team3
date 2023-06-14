@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     private bool isShadow = false;
     private bool isGround = false;
     private bool isMove = true;
+    //[HideInInspector]
+    public bool onChange = false;
 
     private void Start()
     {
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         characterBox = GetComponent<CapsuleCollider2D>();
         shadowBox = GetComponent<BoxCollider2D>();
+        onChange = false;
     }
 
     private void Update()
@@ -38,62 +41,16 @@ public class Player : MonoBehaviour
         if (!isMove)
             return;
 
-        movement.x = Input.GetAxisRaw("Horizontal");
+        Move();
 
-        if (movement.x == 0f)
+        if (onChange && Input.GetKeyDown(KeyCode.LeftControl))
         {
-            ani.SetBool("isRun", false);
-        }
-        else
-        {
-            if (movement.x > 0)
-                spriteRenderer.flipX = true;
-            else
-                spriteRenderer.flipX = false;
-            ani.SetBool("isRun", true);
-        }
-        
-        if (controlledObjRb != null)
-        {
-            controlledObjRb.AddForce(movement * movementSpeed * Time.deltaTime * 250f, ForceMode2D.Force);
-        }
-        else if (controlledObj != null)
-        {
-            controlledObj.transform.Translate(movement * movementSpeed * Time.deltaTime);
-        }
-        else
-        {
-            transform.Translate(movement * movementSpeed * Time.deltaTime);
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            if ((gameObject.layer == LayerMask.NameToLayer("Player") && isGround) || gameObject.layer == LayerMask.NameToLayer("Shadow"))
-            {
-                isMove = false;
-                isShadow = !isShadow;
-
-                characterBox.enabled = !isShadow;
-                shadowBox.enabled = isShadow;
-                spriteRenderer.flipY = isShadow;
-                gameObject.transform.position += !isShadow ? Vector3.up : Vector3.zero;
-                gameObject.layer = isShadow ? LayerMask.NameToLayer("Shadow") : LayerMask.NameToLayer("Player");
-                ani.SetTrigger("Change");
-            }
-        }
-
-        if (rb.velocity.y != 0)
-        {
-            isGround = false;
-            ani.SetBool("isGround", false);
-        }
-        if (Input.GetButtonDown("Jump") && isGround && !isShadow)
-        {
-            OnJump();
+            Change();
         }
 
         if (isShadow)
         {
+            onChange = true;
             Vector3 pos = transform.position;
             pos.y += 1f;
             Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, radius, LayerMask.GetMask("Enemy") | LayerMask.GetMask("DynamicObject") | LayerMask.GetMask("Coin"));
@@ -148,11 +105,72 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (controlledObj != null)
+                controlledObj.transform.parent = null;
+            controlledObj = null;
+
+            onChange = false;
+            gameObject.layer = LayerMask.NameToLayer("Player");
+        }
+    }
+
+    private void Move()
+    {
+        movement.x = Input.GetAxisRaw("Horizontal");
+
+        if (movement.x == 0f)
+        {
+            ani.SetBool("isRun", false);
+        }
+        else
+        {
+            if (movement.x > 0)
+                spriteRenderer.flipX = true;
+            else
+                spriteRenderer.flipX = false;
+            ani.SetBool("isRun", true);
+        }
+
+        if (controlledObjRb != null)
+        {
+            controlledObjRb.AddForce(movement * movementSpeed * Time.deltaTime * 250f, ForceMode2D.Force);
+        }
         else if (controlledObj != null)
         {
-            controlledObj.transform.parent = null;
-            gameObject.layer = LayerMask.NameToLayer("Player");
-            controlledObj = null;
+            controlledObj.transform.Translate(movement * movementSpeed * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(movement * movementSpeed * Time.deltaTime);
+        }
+
+        if (rb.velocity.y != 0)
+        {
+            isGround = false;
+            ani.SetBool("isGround", false);
+        }
+        if (Input.GetButtonDown("Jump") && isGround && !isShadow)
+        {
+            OnJump();
+        }
+    }
+
+    private void Change()
+    {
+        if ((gameObject.layer == LayerMask.NameToLayer("Player") && isGround) || gameObject.layer == LayerMask.NameToLayer("Shadow"))
+        {
+            isMove = false;
+            isShadow = !isShadow;
+
+            characterBox.enabled = !isShadow;
+            shadowBox.enabled = isShadow;
+            spriteRenderer.flipY = isShadow;
+            gameObject.transform.position += !isShadow ? Vector3.up : Vector3.zero;
+            gameObject.layer = isShadow ? LayerMask.NameToLayer("Shadow") : LayerMask.NameToLayer("Player");
+            onChange = !isShadow;
+            ani.SetTrigger("Change");
         }
     }
 
