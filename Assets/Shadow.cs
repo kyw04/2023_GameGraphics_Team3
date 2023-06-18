@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shadow : MonoBehaviour
 {
     public bool defaultShadow;
+    [HideInInspector]
     public bool onShadow;
     public SpriteRenderer shadow;
 
@@ -26,6 +27,9 @@ public class Shadow : MonoBehaviour
 
             foreach (RaycastHit2D hit in hits)
             {
+                if (hit.collider.gameObject == this.gameObject)
+                    continue;
+
                 if (minPoint == Vector2.zero || minPoint.y > hit.point.y)
                 {
                     //Debug.Log(hit.collider.name);
@@ -33,7 +37,6 @@ public class Shadow : MonoBehaviour
                 }
             }
 
-            minPoint.y += 0.35f * shadow.transform.localScale.x;
             shadow.transform.position = minPoint;
 
             if (shadow)

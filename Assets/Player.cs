@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        isMove = true;
         controlledObj = null;
         controlledObjRb = null;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -111,7 +112,7 @@ public class Player : MonoBehaviour
                 controlledObj.transform.parent = null;
             controlledObj = null;
 
-            onChange = false;
+            //onChange = false;
             gameObject.layer = LayerMask.NameToLayer("Player");
         }
     }
@@ -159,7 +160,7 @@ public class Player : MonoBehaviour
 
     private void Change()
     {
-        if ((gameObject.layer == LayerMask.NameToLayer("Player") && isGround) || gameObject.layer == LayerMask.NameToLayer("Shadow"))
+        if ((!isShadow && isGround) || isShadow)
         {
             isMove = false;
             isShadow = !isShadow;
@@ -209,6 +210,19 @@ public class Player : MonoBehaviour
             OnJump();
             collision.GetComponentInParent<Enemy>().Die();
         }
+
+        if (collision.gameObject.CompareTag("ShadowChangeZone"))
+        {
+            onChange = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("ShadowChangeZone"))
+        {
+            onChange = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -221,6 +235,7 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("End"))
         {
+            isMove = false;
             SceneChangeManager.instance.ChangeScene(collision.gameObject.name);
         }
     }
