@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private bool isShadow = false;
     private bool isGround = false;
     private bool isMove = true;
-    //[HideInInspector]
+    [HideInInspector]
     public bool onChange = false;
 
     private void Start()

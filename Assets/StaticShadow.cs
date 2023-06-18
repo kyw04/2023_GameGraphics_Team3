@@ -33,7 +33,6 @@ public class StaticShadow : MonoBehaviour
 
                 if (minPoint == Vector2.zero || minPoint.y > hit.point.y)
                 {
-                    Debug.Log(hit.point);
                     //Debug.Log(hit.collider.name);
                     colliderSize.y = hit.distance / transform.lossyScale.y;
                     colliderOffset.y = colliderSize.y / 2f;
