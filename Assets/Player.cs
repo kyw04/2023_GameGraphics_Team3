@@ -8,8 +8,12 @@ public class Player : MonoBehaviour
     public float movementSpeed = 5f;
     public float jumpPower = 5f;
     public float coinCount = 0;
+    public AudioClip[] moveSounds;
+    public AudioClip jumpSound;
+    public AudioClip changeSound;
     public CameraMove cameraMove;
 
+    private AudioSource audioSource;
     private GameObject controlledObj;
     private Rigidbody2D controlledObjRb;
     private SpriteRenderer spriteRenderer;
@@ -18,6 +22,9 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D characterBox;
     private BoxCollider2D shadowBox;
     private Vector2 movement;
+    private int moveSoundIndex;
+    private float moveSoundDlay = 0.3f;
+    private float moveSoundLastTime;
     private bool isShadow = false;
     private bool isGround = false;
     private bool isMove = true;
@@ -29,6 +36,8 @@ public class Player : MonoBehaviour
         isMove = true;
         controlledObj = null;
         controlledObjRb = null;
+        moveSoundIndex = 0;
+        audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         ani = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -40,7 +49,11 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (!isMove)
+        {
+            ani.SetBool("isRun", false);
+
             return;
+        }
 
         Move();
 
@@ -132,6 +145,14 @@ public class Player : MonoBehaviour
             else
                 spriteRenderer.flipX = false;
             ani.SetBool("isRun", true);
+
+            if (moveSoundLastTime + moveSoundDlay <= Time.time && isGround && !isShadow)
+            {
+                moveSoundLastTime = Time.time;
+                audioSource.PlayOneShot(moveSounds[moveSoundIndex++]);
+                moveSoundIndex = moveSoundIndex % moveSounds.Length;
+            }
+                
         }
 
         if (controlledObjRb != null)
@@ -165,6 +186,7 @@ public class Player : MonoBehaviour
             isMove = false;
             isShadow = !isShadow;
 
+            audioSource.PlayOneShot(changeSound);
             characterBox.enabled = !isShadow;
             shadowBox.enabled = isShadow;
             spriteRenderer.flipY = isShadow;
@@ -177,6 +199,7 @@ public class Player : MonoBehaviour
 
     private void OnJump()
     {
+        audioSource.PlayOneShot(jumpSound);
         isGround = false;
         ani.SetTrigger("doJump");
         ani.SetBool("isGround", false);
@@ -191,7 +214,7 @@ public class Player : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("GameOver");
+        SceneChangeManager.instance.GameOver();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -227,7 +250,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (isMove && collision.gameObject.CompareTag("Enemy"))
         {
             isMove = false;
             ani.SetTrigger("doDie");

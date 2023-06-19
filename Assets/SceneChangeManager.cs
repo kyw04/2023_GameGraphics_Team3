@@ -8,6 +8,7 @@ public class SceneChangeManager : MonoBehaviour
 {
     public static SceneChangeManager instance;
     public AnimationClip animationClip;
+    public Image gamOverImage;
     
     private Animator changeSceneAnimator;
 
@@ -16,6 +17,7 @@ public class SceneChangeManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null) { instance = this; DontDestroyOnLoad(instance); }
+        else Destroy(this.gameObject);
     }
 
     private void Start()
@@ -41,6 +43,11 @@ public class SceneChangeManager : MonoBehaviour
         animationClip.events = animationEvents;
 
         changeSceneAnimator.SetTrigger("doChange");
+    }
+
+    public void GameOver()
+    {
+        changeSceneAnimator.SetTrigger("GameOver");
     }
 
     public void LoadScene(string name)
