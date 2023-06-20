@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private bool isShadow = false;
     private bool isGround = false;
     private bool isMove = true;
-    [HideInInspector]
+    //[HideInInspector]
     public bool onChange = false;
 
     private void Start()
@@ -201,14 +201,14 @@ public class Player : MonoBehaviour
         {
             isMove = false;
             isShadow = !isShadow;
-
+            
             audioSource.PlayOneShot(changeSound);
             characterBox.enabled = !isShadow;
             shadowBox.enabled = isShadow;
             spriteRenderer.flipY = isShadow;
             gameObject.transform.position += !isShadow ? Vector3.up * 1.25f : Vector3.zero;
             gameObject.layer = isShadow ? LayerMask.NameToLayer("Shadow") : LayerMask.NameToLayer("Player");
-            onChange = !isShadow;
+            onChange = false;
             ani.SetTrigger("Change");
         }
     }
