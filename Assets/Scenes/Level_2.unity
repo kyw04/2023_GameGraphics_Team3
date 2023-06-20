@@ -4683,7 +4683,7 @@ GameObject:
   - component: {fileID: 1938401175}
   - component: {fileID: 1938401176}
   m_Layer: 13
-  m_Name: Start
+  m_Name: Clear
   m_TagString: End
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

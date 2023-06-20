@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0942681f989dd0c43a04870f3de0c41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 1.5
   movementSpeed: 6
   jumpPower: 15
   coinCount: 0
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 3395029861279436762}
   m_Layer: 14
   m_Name: Foot
-  m_TagString: Untagged
+  m_TagString: PlayerFoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

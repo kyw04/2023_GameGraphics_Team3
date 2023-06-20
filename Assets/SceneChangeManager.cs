@@ -9,10 +9,10 @@ public class SceneChangeManager : MonoBehaviour
     public static SceneChangeManager instance;
     public AnimationClip animationClip;
     public Image gamOverImage;
-    
-    private Animator changeSceneAnimator;
+    public AudioSource audioSource;
 
-    public AnimationEvent[] animationEvents;
+    private Animator changeSceneAnimator;
+    private AnimationEvent[] animationEvents;
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class SceneChangeManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         changeSceneAnimator =  GetComponent<Animator>();
         animationEvents = animationClip.events;
     }

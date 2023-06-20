@@ -57,35 +57,36 @@ public class Player : MonoBehaviour
 
         Move();
 
-        if (onChange && Input.GetKeyDown(KeyCode.LeftControl))
+        if (onChange && !controlledObj && Input.GetKeyDown(KeyCode.LeftShift))
         {
             Change();
+        }
+
+        Vector3 pos = transform.position;
+        pos.y += 1f;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, radius, LayerMask.GetMask("Enemy") | LayerMask.GetMask("DynamicObject") | LayerMask.GetMask("Coin") | LayerMask.GetMask("Elevator"));
+        Collider2D selectCollider = null;
+        float min = -1;
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Coin"))
+            {
+                collider.GetComponent<Coin>().GetCoin(this);
+                continue;
+            }
+
+            float dis = Mathf.Abs(Vector2.Distance(collider.transform.position, transform.position));
+            if (min == -1 || min > dis)
+            {
+                min = dis;
+                selectCollider = collider;
+            }
         }
 
         if (isShadow)
         {
             onChange = true;
-            Vector3 pos = transform.position;
-            pos.y += 1f;
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, radius, LayerMask.GetMask("Enemy") | LayerMask.GetMask("DynamicObject") | LayerMask.GetMask("Coin"));
-            Collider2D selectCollider = null;
-            float min = -1;
-
-            foreach (Collider2D collider in colliders)
-            {
-                if (collider.CompareTag("Coin"))
-                {
-                    collider.GetComponent<Coin>().GetCoin(this);
-                    continue;
-                }
-
-                float dis = Mathf.Abs(Vector2.Distance(collider.transform.position, transform.position));
-                if (min == -1 || min > dis)
-                {
-                    min = dis;
-                    selectCollider = collider;
-                }
-            }
 
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -103,19 +104,26 @@ public class Player : MonoBehaviour
                     gameObject.layer = LayerMask.NameToLayer("Shadow");
                     controlledObj = null;
                 }
-                else if (selectCollider && selectCollider.GetComponent<Shadow>().onShadow)
+                else if (selectCollider)
                 {
-                    gameObject.layer = selectCollider.gameObject.layer;
-                    transform.position = selectCollider.transform.position;
-                    shadowBox.enabled = false;
-                    rb.gravityScale = 0f;
-                    rb.velocity = Vector2.zero;
-                    spriteRenderer.enabled = false;
-                    cameraMove.target = selectCollider.transform;
-                    if (selectCollider.GetComponent<Rigidbody2D>())
-                        controlledObjRb = selectCollider.GetComponent<Rigidbody2D>();
-                    selectCollider.transform.parent = this.transform;
-                    controlledObj = selectCollider.gameObject;
+                    if (selectCollider.GetComponent<Shadow>() && selectCollider.GetComponent<Shadow>().onShadow)
+                    {
+                        gameObject.layer = selectCollider.gameObject.layer;
+                        transform.position = selectCollider.transform.position;
+                        shadowBox.enabled = false;
+                        rb.gravityScale = 0f;
+                        rb.velocity = Vector2.zero;
+                        spriteRenderer.enabled = false;
+                        cameraMove.target = selectCollider.transform;
+                        if (selectCollider.GetComponent<Rigidbody2D>())
+                            controlledObjRb = selectCollider.GetComponent<Rigidbody2D>();
+                        selectCollider.transform.parent = this.transform;
+                        controlledObj = selectCollider.gameObject;
+                    }
+                    else if (selectCollider.CompareTag("ElevatorChain"))
+                    {
+                        selectCollider.transform.parent.GetComponentInChildren<Elevator>().FixChain();
+                    }
                 }
             }
         }
@@ -124,6 +132,14 @@ public class Player : MonoBehaviour
             if (controlledObj != null)
                 controlledObj.transform.parent = null;
             controlledObj = null;
+
+            if (selectCollider && Input.GetKeyDown(KeyCode.F))
+            { 
+                if (selectCollider.CompareTag("ElevatorButton"))
+                {
+                    selectCollider.transform.parent.GetComponentInChildren<Elevator>().ButtonClick();
+                }
+            }
 
             //onChange = false;
             gameObject.layer = LayerMask.NameToLayer("Player");
@@ -152,7 +168,7 @@ public class Player : MonoBehaviour
                 audioSource.PlayOneShot(moveSounds[moveSoundIndex++]);
                 moveSoundIndex = moveSoundIndex % moveSounds.Length;
             }
-                
+
         }
 
         if (controlledObjRb != null)
@@ -190,7 +206,7 @@ public class Player : MonoBehaviour
             characterBox.enabled = !isShadow;
             shadowBox.enabled = isShadow;
             spriteRenderer.flipY = isShadow;
-            gameObject.transform.position += !isShadow ? Vector3.up : Vector3.zero;
+            gameObject.transform.position += !isShadow ? Vector3.up * 1.25f : Vector3.zero;
             gameObject.layer = isShadow ? LayerMask.NameToLayer("Shadow") : LayerMask.NameToLayer("Player");
             onChange = !isShadow;
             ani.SetTrigger("Change");
