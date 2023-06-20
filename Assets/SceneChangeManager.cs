@@ -48,7 +48,7 @@ public class SceneChangeManager : MonoBehaviour
 
     public void GameOver()
     {
-        changeSceneAnimator.SetTrigger("GameOver");
+        ChangeScene("GameOver");
     }
 
     public void LoadScene(string name)

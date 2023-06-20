@@ -932,6 +932,72 @@ Transform:
   m_Father: {fileID: 468113727}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &337005126
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 346902955}
+    m_Modifications:
+    - target: {fileID: 3998733302297324154, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_Name
+      value: StaticShadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.1969333
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+--- !u!4 &337005127 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3998733302297324155, guid: aa0c94a619b37174f94fed3f2d4c3896, type: 3}
+  m_PrefabInstance: {fileID: 337005126}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &346902954
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +1027,8 @@ Transform:
   m_LocalPosition: {x: 39.630856, y: -1.764807, z: 0.5736111}
   m_LocalScale: {x: 3.5, y: 3.5, z: 3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 337005127}
   m_Father: {fileID: 2119097762}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1005,7 +1072,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 997bd2a1f6a070c49975185443089a4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1035,13 +1102,13 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.9557838, y: -0.54237956}
   - {x: -0.9584041, y: -0.19180927}
-  - {x: -0.46691564, y: 0.25295386}
-  - {x: -0.46106976, y: 0.6885873}
-  - {x: -0.4518238, y: 0.68814665}
-  - {x: -0.08158835, y: 0.72244036}
-  - {x: 0.18666625, y: 0.07974142}
-  - {x: 0.4165043, y: 0.18418583}
-  - {x: 0.6564195, y: -0.30700028}
+  - {x: -0.83241045, y: 2.8114142}
+  - {x: -0.40732068, y: 2.9998016}
+  - {x: 0.117916495, y: 2.8811128}
+  - {x: 0.25344998, y: 0.7517989}
+  - {x: 0.47046775, y: 0.21329466}
+  - {x: 0.48328003, y: 0.18418583}
+  - {x: 0.51598203, y: 0.13771933}
   - {x: 0.94000536, y: -0.19791812}
   - {x: 0.9488375, y: -0.5712786}
   m_AdjacentStartPoint: {x: 0, y: 0}
